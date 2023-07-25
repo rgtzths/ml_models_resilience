@@ -96,7 +96,7 @@ def multi_plot(df, args, addAll = True):
 
     fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons, x=0.1, xanchor="left", y=1.1, yanchor="top")])
     
-    print(fig.show(renderer="iframe_connected"))
+    fig.show(renderer=args.f)
 
 
 def main(args):
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Plot data from the ML dataset')
     parser.add_argument('-i', type=str, help='output dataset CSV', default='output.csv')
     parser.add_argument('-a', type=Aggregation, choices=list(Aggregation), default='max')
-    parser.add_argument('-d', type=str, help="Choose the destination of the image (iframe_connected, pdf, or browser)", default='browser')
+    parser.add_argument('-f', type=str, help="Choose the format of the image (iframe_connected, pdf, or browser)", default='browser')
     args = parser.parse_args()
     
     main(args)

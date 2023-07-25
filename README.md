@@ -41,3 +41,7 @@ The `get_results.py` provides a statistical analysis of the results, pinpointing
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 # Results 
+
+Since the results are three dimensional plots they are presented in the github pages.
+
+To check them click [here](https://rgtzths.github.io/shallow_resilience/).
