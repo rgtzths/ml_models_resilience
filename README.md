@@ -42,7 +42,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 
 # Results 
-
-<figure>
-<iframe scrolling="no"width="100%" height="545px" src="plots/figure_0.html" frameborder="0" allowfullscreen> </iframe>
-</figure>
