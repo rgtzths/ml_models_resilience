@@ -44,4 +44,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Since the results are three-dimensional plots, they are presented on the GitHub pages.
 
-To check them, click [here](https://rgtzths.github.io/shallow_resilience/).
+To check them, click [here](https://anonymous.4open.science/w/shallow_resilience-F0A3/).
