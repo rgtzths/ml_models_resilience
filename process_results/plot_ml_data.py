@@ -41,11 +41,11 @@ def multi_plot(df, args, addAll = True):
     # Generate all the data for plotly
     for m in tqdm.tqdm(models):
         model_data = df.loc[df['model']==m]
-        data_x = model_data['malicious'].tolist()
+        data_x = [round((x/20)*100, 1) for x in model_data['malicious'].tolist()]
         data_y = model_data['dataset_len'].tolist()
 
         data_z = []
-        for i, j in tzip(data_x, data_y, leave=False):
+        for i, j in tzip(model_data['malicious'].tolist(), data_y, leave=False):
             temp_data = model_data.loc[(model_data['malicious']==i) & (model_data['dataset_len']==j),['mcc']]
             
             if args.a is Aggregation.max:
@@ -73,7 +73,7 @@ def multi_plot(df, args, addAll = True):
     axis = dict(range = [-0.1, 1])
     fig.update_layout(scene=dict(zaxis = axis))
     fig.update_layout(scene = dict(
-                    xaxis_title='Nº Malicious users',
+                    xaxis_title='% of Malicious users',
                     yaxis_title='Nº of training examples',
                     zaxis_title='MCC'))
     fig.update_layout(
@@ -96,7 +96,7 @@ def multi_plot(df, args, addAll = True):
 
     fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons, x=0.1, xanchor="left", y=1.1, yanchor="top")])
     
-    print(fig.show(renderer="iframe"))
+    print(fig.show(renderer="iframe_connected"))
 
 
 def main(args):
@@ -109,6 +109,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Plot data from the ML dataset')
     parser.add_argument('-i', type=str, help='output dataset CSV', default='output.csv')
     parser.add_argument('-a', type=Aggregation, choices=list(Aggregation), default='max')
+    parser.add_argument('-d', type=str, help="Choose the destination of the image (iframe_connected, pdf, or browser)", default='browser')
     args = parser.parse_args()
     
     main(args)
