@@ -28,3 +28,14 @@ The process results folder provides tools to analyze the outputs from the `run_m
 The `plot_ml_data.py` creates a 3D plot of the models' performance in the file provided.
 The `merge_results.py` merges the results obtained for the same model in different attacks, to enable an easier comparation.
 The `get_results.py` provides a statistical analysis of the results, pinpointing when a model drops bellow a performance treshold and the worst and best performance per model.
+
+## Authors
+
+* **Mário Antunes** - [mariolpantunes](https://github.com/mariolpantunes)
+* **Rafael Teixeira** - [rgtzths](https://github.com/rgtzths)
+* **Rafael Simões** - []()
+* **Vitor Cunha** - []()
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
