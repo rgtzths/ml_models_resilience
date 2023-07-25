@@ -76,6 +76,11 @@ def multi_plot(df, args, addAll = True):
                     xaxis_title='Nº Malicious users',
                     yaxis_title='Nº of training examples',
                     zaxis_title='MCC'))
+    fig.update_layout(
+        autosize=True,
+        margin=dict(t=0, b=0, l=0, r=0),
+    )
+    
     button_all = dict(label = 'All', method = 'restyle', args = [{'visible': [True]*len(models), 'title': 'All', 'showlegend':True}])
 
     def create_layout_button(column):
@@ -86,10 +91,12 @@ def multi_plot(df, args, addAll = True):
             else:
                 visible.append(False)
         return dict(label = column, method = 'restyle', args = [{'visible': visible, 'title': column, 'showlegend': True}])
-    buttons = ([button_all] * addAll) + list(map(lambda column: create_layout_button(column), models))
-    fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons)])
     
-    fig.show()
+    buttons = ([button_all] * addAll) + list(map(lambda column: create_layout_button(column), models))
+
+    fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons, x=0.1, xanchor="left", y=1.1, yanchor="top")])
+    
+    print(fig.show(renderer="iframe"))
 
 
 def main(args):
@@ -97,22 +104,10 @@ def main(args):
     data = pd.read_csv(args.i, header = 0)
     multi_plot(data,args)
 
-    #fig = px.scatter_3d(data, x='malicious', y='dataset_len', z='mcc', color='model')
-    #fig.show()
-
-    #fig = plt.figure()
-    #ax = fig.add_subplot(111, projection='3d')
-    #ax.scatter(x,y,z)
-    #ax.plot_trisurf(x,y,z)
-    #plt.show()
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Plot data from the ML dataset')
     parser.add_argument('-i', type=str, help='output dataset CSV', default='output.csv')
-    #parser.add_argument('-l', type=int, help='number of iterations (loops)', default=20)
-    #parser.add_argument('-t', type=int, help='MNIST test dataset', default='dataset/mnist_test.csv')
-    #parser.add_argument('-o', type=str, help='output folder', default='results')
     parser.add_argument('-a', type=Aggregation, choices=list(Aggregation), default='max')
     args = parser.parse_args()
     
