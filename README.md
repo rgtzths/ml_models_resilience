@@ -39,3 +39,10 @@ The `get_results.py` provides a statistical analysis of the results, pinpointing
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+
+# Results 
+
+<figure>
+<iframe scrolling="no"width="100%" height="545px" src="plots/figure_0.html" frameborder="0" allowfullscreen> </iframe>
+</figure>
