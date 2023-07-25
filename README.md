@@ -1,3 +1,5 @@
+{::options parse_block_html="true" /}
+
 # shallow_resilience
 This repository is the code basis for the paper intitled "Data Poisoning: When ML feels ill"
 It explores several security threads directed towards ML models using the applied scenario of a captcha service.
