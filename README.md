@@ -40,5 +40,4 @@ The `get_results.py` provides a statistical analysis of the results, pinpointing
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-
 # Results 
