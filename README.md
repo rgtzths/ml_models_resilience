@@ -1,5 +1,3 @@
-{::options parse_block_html="true" /}
-
 # shallow_resilience
 This repository is the code basis for the paper intitled "Data Poisoning: When ML feels ill"
 It explores several security threads directed towards ML models using the applied scenario of a captcha service.
@@ -44,7 +42,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 
 # Results 
-
-<div>
-<iframe scrolling="no"width="100%" height="545px" src="plots/figure_0.html" frameborder="0" allowfullscreen> </iframe>
-</div>
