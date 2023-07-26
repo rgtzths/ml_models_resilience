@@ -37,15 +37,15 @@ def multi_plot(df, args, addAll = True):
     # Get the models within the CSV file
     models = df['model'].unique().tolist()
     models.sort()
-
+    #models = ['RF', 'LR']
     # Generate all the data for plotly
     for m in tqdm.tqdm(models):
         model_data = df.loc[df['model']==m]
-        data_x = [round((x/20)*100, 1) for x in model_data['malicious'].tolist()]
-        data_y = model_data['dataset_len'].tolist()
+        data_x = [round(x/20,2) for x in model_data['malicious'].tolist()]
+        data_y = [round(x/60000,2) for x in model_data['dataset_len'].tolist()]
 
         data_z = []
-        for i, j in tzip(model_data['malicious'].tolist(), data_y, leave=False):
+        for i, j in tzip(model_data['malicious'].tolist(), model_data['dataset_len'].tolist(), leave=False):
             temp_data = model_data.loc[(model_data['malicious']==i) & (model_data['dataset_len']==j),['mcc']]
             
             if args.a is Aggregation.max:
@@ -73,8 +73,8 @@ def multi_plot(df, args, addAll = True):
     axis = dict(range = [-0.1, 1])
     fig.update_layout(scene=dict(zaxis = axis))
     fig.update_layout(scene = dict(
-                    xaxis_title='% of Malicious users',
-                    yaxis_title='Nº of training examples',
+                    xaxis_title='% of malicious users',
+                    yaxis_title='% of training examples',
                     zaxis_title='MCC'))
     fig.update_layout(
         autosize=True,
@@ -96,7 +96,12 @@ def multi_plot(df, args, addAll = True):
 
     fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons, x=0.1, xanchor="left", y=1.1, yanchor="top")])
     
-    fig.show(renderer=args.f)
+    if args.f == "pdf":
+        fig.write_image("images/fig1.pdf")
+    elif args.f == "html":
+        fig.write_html("plots/figure_0.html", include_plotlyjs=False, include_mathjax=False, full_html=False)
+    else:
+        fig.show(renderer=args.f)
 
 
 def main(args):
