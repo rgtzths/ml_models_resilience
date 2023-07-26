@@ -35,9 +35,11 @@ def multi_plot(df, args, addAll = True):
     fig = go.Figure()
 
     # Get the models within the CSV file
-    models = df['model'].unique().tolist()
-    models.sort()
-    #models = ['RF', 'LR']
+    if not args.m: 
+        models = df['model'].unique().tolist()
+    else:
+        models = args.m
+    
     # Generate all the data for plotly
     for m in tqdm.tqdm(models):
         model_data = df.loc[df['model']==m]
@@ -71,13 +73,21 @@ def multi_plot(df, args, addAll = True):
         )
 
     axis = dict(range = [-0.1, 1])
-    fig.update_layout(scene=dict(zaxis = axis))
+
+    camera = dict(
+        center=dict(x=0, y=0, z=0),
+        eye=dict(x=-0.1, y=2, z=0.4)
+    )
+
+    fig.update_layout(scene=dict(zaxis = axis), scene_camera=camera)
     fig.update_layout(scene = dict(
                     xaxis_title='% of malicious users',
                     yaxis_title='% of training examples',
                     zaxis_title='MCC'))
+    
     fig.update_layout(
-        autosize=True,
+        height=700,
+        width=800,
         margin=dict(t=0, b=0, l=0, r=0),
     )
     
@@ -93,14 +103,14 @@ def multi_plot(df, args, addAll = True):
         return dict(label = column, method = 'restyle', args = [{'visible': visible, 'title': column, 'showlegend': True}])
     
     buttons = ([button_all] * addAll) + list(map(lambda column: create_layout_button(column), models))
-
-    fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons, x=0.1, xanchor="left", y=1.1, yanchor="top")])
     
     if args.f == "pdf":
-        fig.write_image("images/fig1.pdf")
+        fig.write_image(args.o)
     elif args.f == "html":
-        fig.write_html("plots/figure_0.html", include_plotlyjs=False, include_mathjax=False, full_html=False)
+        fig.write_html(args.o, include_plotlyjs=False, include_mathjax=False, full_html=False)
+        fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons, x=0.1, xanchor="left", y=1.1, yanchor="top")])
     else:
+        fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons, x=0.1, xanchor="left", y=1.1, yanchor="top")])
         fig.show(renderer=args.f)
 
 
@@ -114,7 +124,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Plot data from the ML dataset')
     parser.add_argument('-i', type=str, help='output dataset CSV', default='output.csv')
     parser.add_argument('-a', type=Aggregation, choices=list(Aggregation), default='max')
-    parser.add_argument('-f', type=str, help="Choose the format of the image (iframe_connected, pdf, or browser)", default='browser')
+    parser.add_argument('-f', type=str, help="Choose the format of the image (html, pdf, or browser)", default='browser')
+    parser.add_argument('-o', type=str, help="Output file name", default='plots/figure1.pdf')
+    parser.add_argument('-m', type=str, nargs="+", help="Models to consider", default=None)
     args = parser.parse_args()
     
     main(args)
