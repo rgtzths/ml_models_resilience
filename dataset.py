@@ -74,7 +74,8 @@ class Dataset:
             # select the right part of the captcha
             right_indexes = []
             for _ in range(self.right):
-                # increment the counter for the non curated labels
+
+                # increment the counter for the non curated labels, skiping those that already have 3 or more votes
                 while(self.base_idx + self.counter in self.votes and len(self.votes[self.base_idx + self.counter]) >= self.n_votes):
                     self.counter = (self.counter + 1) % (len(self.data) - self.curated_labels_size)
 
@@ -83,6 +84,8 @@ class Dataset:
 
             # store the information within the cache
             self.cache[ticket] = (left_indexes, right_indexes)
+        except:
+            raise("Error")
 
         finally:
             self.mutex.release()
@@ -132,26 +135,28 @@ class Dataset:
                 for i in range(len(right_indexes)):
                     if right_indexes[i] in self.votes:
                         self.votes[right_indexes[i]].append(right_labels[i])
-                    else:
-                        self.votes[right_indexes[i]] = [right_labels[i]]    
-
-                    if len(self.votes[right_indexes[i]]) == self.n_votes: 
-                        for label in self.votes[right_indexes[i]]:
-                            if self.votes[right_indexes[i]].count(label) > self.n_votes / 2:
-                                #print(self.votes[right_indexes[i]], label, self.all_labels[right_indexes[i]])
-                                self.labels.append((right_indexes[i], label))
-                                self.collected_labels += 1
-                                break
-                        if len(self.labels) == 0 or self.labels[-1][0] != right_indexes[i]:
-                            del self.votes[right_indexes[i]]
-                    
                         
+                        if len(self.votes[right_indexes[i]]) == self.n_votes: 
+                            added = False
+                            for label in self.votes[right_indexes[i]]:
+                                if self.votes[right_indexes[i]].count(label) > self.n_votes / 2:
+                                    self.labels.append((right_indexes[i], label))
+                                    self.collected_labels += 1
+                                    added = True
+                                    break
 
-            # check the labels size and store is step is meet
-            if self.percentage() >= self.step or self.curated_labels_size + self.collected_labels == len(self.data):
-                store = True
-                store_labels(self.path, self.labels, self.data)
-                self.labels.clear()
+                            if not added:
+                                del self.votes[right_indexes[i]]
+
+                            # check the labels size and store is step is meet
+                            if self.percentage() >= self.step:
+                                store = True
+                                store_labels(self.path, self.labels, self.data)
+                                self.labels.clear()
+                    else:
+                        self.votes[right_indexes[i]] = [right_labels[i]]
+        except:
+            raise("Error")
         finally:
             self.mutex.release()
 

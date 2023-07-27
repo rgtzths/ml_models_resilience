@@ -123,7 +123,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Plot data from the ML dataset')
     parser.add_argument('-i', type=str, help='output dataset CSV', default='output.csv')
-    parser.add_argument('-a', type=Aggregation, choices=list(Aggregation), default='max')
+    parser.add_argument('-a', type=Aggregation, choices=list(Aggregation), default='min')
     parser.add_argument('-f', type=str, help="Choose the format of the image (html, pdf, or browser)", default='browser')
     parser.add_argument('-o', type=str, help="Output file name", default='plots/figure1.pdf')
     parser.add_argument('-m', type=str, nargs="+", help="Models to consider", default=None)

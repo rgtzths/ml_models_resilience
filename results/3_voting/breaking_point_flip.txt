@@ -1,0 +1,14 @@
+-------- Results obtained for the file results/3_voting/flip_contaminated.csv ---------
+Model     Data point   % Malicious Users   Dataset Size   % of dataset   
+LR        [10,  2]     0.50                26400          0.16           
+SVM_linear[ 7,  2]     0.35                26400          0.11           
+KNN(1)    [12,  3]     0.60                30600          0.25           
+KNN(3)    [13,  4]     0.65                34800          0.31           
+KNN(5)    [13,  5]     0.65                39000          0.35           
+KNN(7)    [14,  5]     0.70                39000          0.38           
+KNN(9)    [14,  5]     0.70                39000          0.38           
+DT        [11,  1]     0.55                22200          0.10           
+ANN       [14,  5]     0.70                39000          0.38           
+RF        [15,  6]     0.75                43200          0.44           
+VF(hard)  [15,  4]     0.75                34800          0.36           
+VF(soft)  [11,  3]     0.55                30600          0.23           

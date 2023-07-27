@@ -21,7 +21,7 @@ def convert_to_average(df, output_file):
         for i, j in tzip(data_x, data_y, leave=False):
             temp_data = model_data.loc[(model_data['malicious']==i) & (model_data['dataset_len']==j),['mcc']]
             
-            result = max(temp_data['mcc'].tolist())
+            result = min(temp_data['mcc'].tolist())
 
             data_z.append(result)
 
@@ -37,7 +37,7 @@ def convert_to_average(df, output_file):
 
     final_df.to_csv(output_file, index=None)
 
-def get_results(file, output_file):
+def get_results(file, output_file, threshold):
     f = open(output_file, "w")
     
     data = pd.read_csv(file, header = 0, index_col=None)
@@ -47,51 +47,54 @@ def get_results(file, output_file):
 
     print("-------- Obtaining best performance ---------")
     f.write("-------- Obtaining best performance ---------\n")
-    print("{:10s}{:20s}{:15s}{:10s}".format("Model", "Malicious Users", "Dataset Size", "MCC"))
-    f.write("{:10s}{:20s}{:15s}{:10s}\n".format("Model", "Malicious Users", "Dataset Size", "MCC"))
+    print("{:10s}{:20s}{:15s}{:15s}{:10s}".format("Model", "Malicious Users", "Dataset Size", "% of dataset", "MCC"))
+    f.write("{:10s}{:20s}{:15s}{:15s}{:10s}\n".format("Model", "Malicious Users", "Dataset Size", "% of dataset", "MCC"))
     for m in models:
         model_data = data.loc[data['model']==m]
         i = model_data["mcc"].idxmax()
-        text = "{:10s}{:<20.0f}{:<15.0f}{:<10.3f}".format(
+        text = "{:10s}{:<20.0f}{:<15.0f}{:<15.2f}{:<10.3f}".format(
                 data.iloc[i]["model"],
                 data.iloc[i]["malicious"], 
                 data.iloc[i]["dataset_len"],
+                round((data.iloc[i]["dataset_len"] - 18000)*(data.iloc[i]["malicious"]/20) / data.iloc[i]["dataset_len"], 2),
                 data.iloc[i]["mcc"])
         print(text)
         f.write(text+"\n")
 
-    print("-------- Obtaining breaking point ---------")
-    f.write("-------- Obtaining breaking point ---------\n")
-    print("{:10s}{:20s}{:15s}{:10s}".format("Model", "Malicious Users", "Dataset Size", "MCC"))
-    f.write("{:10s}{:20s}{:15s}{:10s}\n".format("Model", "Malicious Users", "Dataset Size", "MCC"))
+    print("-------- Obtaining first drop bellow threshold ---------")
+    f.write("-------- Obtaining first drop bellow threshold ---------\n")
+    print("{:10s}{:20s}{:15s}{:15s}{:10s}".format("Model", "Malicious Users", "Dataset Size", "% of dataset",  "MCC"))
+    f.write("{:10s}{:20s}{:15s}{:15s}{:10s}\n".format("Model", "Malicious Users", "Dataset Size", "% of dataset",  "MCC"))
     for m in models:
         model_data = data.loc[data['model']==m]
-        model_data =  model_data.loc[model_data["mcc"] < 0.70]
+        model_data =  model_data.loc[model_data["mcc"] < threshold]
 
         try:
             i = model_data["malicious"].idxmin()
         except:
             i = data.loc[data['model']==m]["mcc"].idxmin()
-        text = "{:10s}{:<20.0f}{:<15.0f}{:<10.3f}".format(
+        text = "{:10s}{:<20.0f}{:<15.0f}{:<15.2f}{:<10.2f}".format(
                 data.iloc[i]["model"],
                 data.iloc[i]["malicious"], 
                 data.iloc[i]["dataset_len"],
-                data.iloc[i]["mcc"])
+                round((data.iloc[i]["dataset_len"] - 18000)*(data.iloc[i]["malicious"]/20) / data.iloc[i]["dataset_len"], 2),
+                round(data.iloc[i]["mcc"],2))
         print(text)
         f.write(text+"\n")
     
     print("-------- Obtaining worst performance ---------")
     f.write("-------- Obtaining worst performance ---------\n")
-    print("{:10s}{:20s}{:15s}{:10s}".format("Model", "Malicious Users", "Dataset Size", "MCC"))
-    f.write("{:10s}{:20s}{:15s}{:10s}\n".format("Model", "Malicious Users", "Dataset Size", "MCC"))
+    print("{:10s}{:20s}{:15s}{:15s}{:10s}".format("Model", "Malicious Users", "Dataset Size", "% of dataset",  "MCC"))
+    f.write("{:10s}{:20s}{:15s}{:15s}{:10s}\n".format("Model", "Malicious Users", "Dataset Size", "% of dataset", "MCC"))
     for m in models:
         model_data = data.loc[data['model']==m]
         i = model_data["mcc"].idxmin()
-        text = "{:10s}{:<20.0f}{:<15.0f}{:<10.3f}".format(
+        text = "{:10s}{:<20.0f}{:<15.0f}{:<15.2f}{:<10.2f}".format(
                 data.iloc[i]["model"],
                 data.iloc[i]["malicious"], 
                 data.iloc[i]["dataset_len"],
-                data.iloc[i]["mcc"])
+                round((data.iloc[i]["dataset_len"] - 18000)*(data.iloc[i]["malicious"]/20) / data.iloc[i]["dataset_len"], 2),
+                round(data.iloc[i]["mcc"],2))
 
         print(text)
         f.write(text+"\n")
@@ -100,7 +103,7 @@ def get_results(file, output_file):
 def main(args):
     data = pd.read_csv(args.i, header = 0, index_col=None)
     convert_to_average(data, args.o)
-    get_results(args.o, args.f)
+    get_results(args.o, args.f, args.t)
 
 
 if __name__ == '__main__':
@@ -108,6 +111,7 @@ if __name__ == '__main__':
     parser.add_argument('-i', type=str, help='results dataset (CSV)', default='output.csv')
     parser.add_argument('-o', type=str, help='output file with combined results', default='result.csv')
     parser.add_argument('-f', type=str, help='output file with statistics', default='log.txt')
+    parser.add_argument('-t', type=float, help='threshold of model performance', default=0.7)
     args = parser.parse_args()
     
     main(args)

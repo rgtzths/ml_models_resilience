@@ -1,0 +1,14 @@
+-------- Results obtained for the file results/3_voting/clean_switch.csv ---------
+Model     Data point   % Malicious Users   Dataset Size   % of dataset   
+LR        [ 9,  2]     0.45                26400          0.14           
+SVM_linear[11,  1]     0.55                22200          0.10           
+KNN(1)    [12,  3]     0.60                30600          0.25           
+KNN(3)    [13,  4]     0.65                34800          0.31           
+KNN(5)    [13,  5]     0.65                39000          0.35           
+KNN(7)    [14,  5]     0.70                39000          0.38           
+KNN(9)    [15,  5]     0.75                39000          0.40           
+DT        [ 8,  2]     0.40                26400          0.13           
+ANN       [14,  5]     0.70                39000          0.38           
+RF        [15,  6]     0.75                43200          0.44           
+VF(hard)  [15,  6]     0.75                43200          0.44           
+VF(soft)  [12,  3]     0.60                30600          0.25           
