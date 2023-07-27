@@ -67,7 +67,12 @@ def main(args):
         if model not in data_per_model:
             data_per_model[model] = [[0]*11 for i in range(21)]
         i = m.index(malicious)
-        j = d.index(dataset_len)
+        while True:
+            try:
+                j = d.index(dataset_len)
+                break
+            except:
+                dataset_len += 1
 
         data_per_model[model][i][j] = data[k]
 

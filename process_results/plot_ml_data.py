@@ -17,6 +17,7 @@ import plotly.graph_objects as go
 import numpy as np
 import tqdm
 from tqdm.contrib import tzip
+from scipy.interpolate import griddata
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger(__name__)
@@ -40,10 +41,7 @@ def multi_plot(df, args, addAll = True):
         models = df['model'].unique().tolist()
     else:
         models = args.m
-    x_min = -1
-    x_max = 2
-    y_min = 0
-    y_max = 1
+
     # Generate all the data for plotly
     for m in tqdm.tqdm(models):
         model_data = df.loc[df['model']==m]
@@ -76,11 +74,18 @@ def multi_plot(df, args, addAll = True):
             )
         )
 
-    data_x = [-0.1, 1.1]
-    data_y = [0.2, 1.1]
-    z = np.ones((len(data_x), len(data_y)))*0.7 
+
+    z = [[-0.1, -0.1, 1, 1]]
+    x = [data_x[7], 1.1, data_x[7], 1.1]
+    y = np.ones(4)*data_y[2]
     
-    fig.add_trace(go.Surface(x=data_x, y=data_y, z=z, showscale=False, opacity=0.8))
+    fig.add_trace(go.Surface(x=x, y=y, z=z, showscale=False, opacity=0.8))
+    
+    line_z = [[-0.1, -0.1], [-0.1, -0.1], [1, 1], [1, 1]]
+    line_y = [data_y[2], 1.1, data_y[2], 1.1]
+    line_x = np.ones(4)*data_x[7]
+
+    fig.add_trace(go.Surface(x=line_x, y=line_y, z=line_z, showscale=False, opacity=0.8))
 
     camera = dict(
         center=dict(x=0, y=0, z=0),
