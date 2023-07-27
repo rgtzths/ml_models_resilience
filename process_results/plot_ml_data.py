@@ -14,6 +14,7 @@ import statistics
 
 import pandas as pd
 import plotly.graph_objects as go
+import numpy as np
 import tqdm
 from tqdm.contrib import tzip
 
@@ -39,7 +40,10 @@ def multi_plot(df, args, addAll = True):
         models = df['model'].unique().tolist()
     else:
         models = args.m
-    
+    x_min = -1
+    x_max = 2
+    y_min = 0
+    y_max = 1
     # Generate all the data for plotly
     for m in tqdm.tqdm(models):
         model_data = df.loc[df['model']==m]
@@ -67,23 +71,28 @@ def multi_plot(df, args, addAll = True):
                 y=data_y,
                 z=data_z,
                 mode='markers',
-                marker_color = models.index(m),
+                marker_color = "#ef553b", #models.index(m)+1, 
                 name = m
             )
         )
 
-    axis = dict(range = [-0.1, 1])
+    data_x = [-0.1, 1.1]
+    data_y = [0.2, 1.1]
+    z = np.ones((len(data_x), len(data_y)))*0.7 
+    
+    fig.add_trace(go.Surface(x=data_x, y=data_y, z=z, showscale=False, opacity=0.8))
 
     camera = dict(
         center=dict(x=0, y=0, z=0),
         eye=dict(x=-0.1, y=2, z=0.4)
     )
 
-    fig.update_layout(scene=dict(zaxis = axis), scene_camera=camera)
+    fig.update_layout(scene=dict(xaxis = dict(range = [-0.1, 1.1], dtick=0.2), yaxis=dict(range = [0.2, 1.1], dtick=0.2), zaxis = dict(range = [-0.1, 1], dtick=0.2)), scene_camera=camera)
     fig.update_layout(scene = dict(
                     xaxis_title='% of malicious users',
                     yaxis_title='% of training examples',
                     zaxis_title='MCC'))
+    fig.update_layout(scene_aspectmode='cube')
     
     fig.update_layout(
         height=700,
@@ -106,9 +115,11 @@ def multi_plot(df, args, addAll = True):
     
     if args.f == "pdf":
         fig.write_image(args.o)
+
     elif args.f == "html":
-        fig.write_html(args.o, include_plotlyjs=False, include_mathjax=False, full_html=False)
         fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons, x=0.1, xanchor="left", y=1.1, yanchor="top")])
+        fig.write_html(args.o, include_plotlyjs=False, include_mathjax=False, full_html=False)
+
     else:
         fig.update_layout(updatemenus=[go.layout.Updatemenu(active = 0, buttons = buttons, x=0.1, xanchor="left", y=1.1, yanchor="top")])
         fig.show(renderer=args.f)
