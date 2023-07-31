@@ -1,0 +1,14 @@
+-------- Results obtained for the file results/no_voting/random_contaminated.csv ---------
+Model     Data point   % Malicious Users   Dataset Size   % of dataset   
+LR        [ 7,  2]     0.35                26400          0.11           
+SVM       [ 7,  2]     0.35                26400          0.11           
+KNN(1)    [12,  3]     0.60                30600          0.25           
+KNN(3)    [14,  5]     0.70                39000          0.38           
+KNN(5)    [17,  7]     0.85                47400          0.53           
+KNN(7)    [18,  8]     0.90                51600          0.59           
+KNN(9)    [18,  9]     0.90                55800          0.61           
+DT        [11,  1]     0.55                22200          0.10           
+ANN       [15,  6]     0.75                43200          0.44           
+RF        [--, --]     --                  --             --             
+VF(hard)  [16,  6]     0.80                43200          0.47           
+VF(soft)  [13,  5]     0.65                39000          0.35           

@@ -55,6 +55,7 @@ class Dataset:
         self.cache = {}
         self.votes = {}
         self.collected_labels = 0
+        self.wrong_labels = 0
         # create the mutex for thread safety
         self.mutex = Lock()
         # store initial part of the dataset
@@ -142,6 +143,8 @@ class Dataset:
                                 if self.votes[right_indexes[i]].count(label) > self.n_votes / 2:
                                     self.labels.append((right_indexes[i], label))
                                     self.collected_labels += 1
+                                    if self.all_labels[right_indexes[i]] != label:
+                                        self.wrong_labels +=1
                                     added = True
                                     break
 
@@ -153,6 +156,7 @@ class Dataset:
                                 store = True
                                 store_labels(self.path, self.labels, self.data)
                                 self.labels.clear()
+                                #print(round(self.wrong_labels / (self.curated_labels_size + self.collected_labels) ,2), self.curated_labels_size + self.collected_labels)
                     else:
                         self.votes[right_indexes[i]] = [right_labels[i]]
         except:
