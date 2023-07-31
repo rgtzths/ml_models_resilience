@@ -29,6 +29,13 @@ The `plot_ml_data.py` creates a 3D plot of the model's performance in the file p
 The `merge_results.py` merges the results obtained for the same model in different attacks to enable an easier comparison.
 The `get_results.py` provides a statistical analysis of the results, pinpointing when a model drops below a performance threshold and the worst and best performance per model.
 
+
+# Results 
+
+Since the plots generated are three-dimensional, they are presented on the GitHub pages.
+
+To check them, click <a href="https://anonymous.4open.science/w/shallow_resilience-F0A3/" target="_blank">here</a>.
+
 ## Authors
 
 * **Mário Antunes** - [mariolpantunes](https://github.com/mariolpantunes)
@@ -39,9 +46,3 @@ The `get_results.py` provides a statistical analysis of the results, pinpointing
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-# Results 
-
-Since the results are three-dimensional plots, they are presented on the GitHub pages.
-
-To check them, click <a href="https://anonymous.4open.science/w/shallow_resilience-F0A3/" target="_blank">here</a>.
