@@ -250,12 +250,9 @@ VF(soft)  | [11,  3]   |  0.55              |  30600        |  0.23         |
 
 
 ## Model degradation with the increase of attackers/poisoned dataset
-Since the results are three-dimensional plots, they are presented on the GitHub pages.
+Since the plots generated are three-dimensional, they are presented on the GitHub pages.
 
 To check them, click <a href="https://anonymous.4open.science/w/shallow_resilience-F0A3/" target="_blank">here</a>.
-
-
-
 
 ## Authors
 
@@ -267,4 +264,3 @@ To check them, click <a href="https://anonymous.4open.science/w/shallow_resilien
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-

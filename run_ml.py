@@ -69,12 +69,12 @@ def main(args):
             clf_ann = MLPClassifier(activation='relu', solver='adam', random_state=r, verbose=False)
 
             models = [
-                #('LR',  clf_lr), ('SVM', clf_svm_linear),
-                ('KNN(1)', clf_knn_1)#, ('KNN(3)', clf_knn_3), ('KNN(5)', clf_knn_5), ('KNN(7)', clf_knn_7), ('KNN(9)', clf_knn_9),
-                #('DT',  clf_dt), ('ANN', clf_ann),
-                #('RF',  RandomForestClassifier(random_state=r)),
-                #('VF(hard)', VotingClassifier(estimators=[('lr', clf_lr), ('knn_3', clf_knn_3), ('dt', clf_dt), ('ann', clf_ann)], voting='hard')),
-                #('VF(soft)', VotingClassifier(estimators=[('lr', clf_lr), ('knn_3', clf_knn_3), ('dt', clf_dt), ('ann', clf_ann)], voting='soft'))
+                ('LR',  clf_lr), ('SVM', clf_svm_linear),
+                ('KNN(1)', clf_knn_1), ('KNN(3)', clf_knn_3), ('KNN(5)', clf_knn_5), ('KNN(7)', clf_knn_7), ('KNN(9)', clf_knn_9),
+                ('DT',  clf_dt), ('ANN', clf_ann),
+                ('RF',  RandomForestClassifier(random_state=r)),
+                ('VF(hard)', VotingClassifier(estimators=[('lr', clf_lr), ('knn_3', clf_knn_3), ('dt', clf_dt), ('ann', clf_ann)], voting='hard')),
+                ('VF(soft)', VotingClassifier(estimators=[('lr', clf_lr), ('knn_3', clf_knn_3), ('dt', clf_dt), ('ann', clf_ann)], voting='soft'))
             ]
 
             for i in tqdm.tqdm(range(args.l+1), leave=False):
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     parser.add_argument('-i', type=str, help='captcha dataset folder', default='results')
     parser.add_argument('-l', type=int, help='number of iterations (loops)', default=20)
     parser.add_argument('-t', type=str, help='MNIST test dataset', default='dataset/mnist_test.csv')
-    parser.add_argument('-o', type=str, help='output folder', default='output.csv')
+    parser.add_argument('-o', type=str, help='output file', default='output.csv')
     args = parser.parse_args()
 
     main(args)
