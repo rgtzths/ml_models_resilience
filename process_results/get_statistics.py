@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# coding: utf-8
+
+__author__ = 'Rafael Teixeira'
+__version__ = '0.1'
+__email__ = 'rafaelgteixeira@ua.pt'
+__status__ = 'Development'
+
 import argparse
 
 import pandas as pd

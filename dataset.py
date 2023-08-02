@@ -156,7 +156,6 @@ class Dataset:
                                 store = True
                                 store_labels(self.path, self.labels, self.data)
                                 self.labels.clear()
-                                #print(round(self.wrong_labels / (self.curated_labels_size + self.collected_labels) ,2), self.curated_labels_size + self.collected_labels)
                     else:
                         self.votes[right_indexes[i]] = [right_labels[i]]
         except:
