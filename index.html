@@ -36,7 +36,7 @@
         var current_page = "no_vote";
         window.onload = function() {
             document.getElementById("scope").selectedIndex = 0;
-            $("#placeholder").load("no_vote.html");
+            $("#placeholder").load("plots_html/no_vote.html");
         }
 
         function change_selectable(){
@@ -44,16 +44,16 @@
             document.getElementById("placeholder").innerHTML = "";
 
             if (value == "no_vote" ){
-                $("#placeholder").load("no_vote.html");
+                $("#placeholder").load("plots_html/no_vote.html");
             }
             else if (value == "vote_3"){
-                $("#placeholder").load("3_vote.html");
+                $("#placeholder").load("plots_html/3_vote.html");
             }
             else if (value == "vote_5"){
-                $("#placeholder").load("5_vote.html");
+                $("#placeholder").load("plots_html/5_vote.html");
             }
             else{
-                $("#placeholder").load("7_vote.html");
+                $("#placeholder").load("plots_html/7_vote.html");
             }
         }
         document.getElementById("scope").onchange = change_selectable;
