@@ -36,37 +36,24 @@
         var current_page = "no_vote";
         window.onload = function() {
             document.getElementById("scope").selectedIndex = 0;
-            document.getElementById("3_vote").style.display = "none";
-            document.getElementById("5_vote").style.display = "none";
-            document.getElementById("7_vote").style.display = "none";
             $("#placeholder").load("no_vote.html");
         }
 
         function change_selectable(){
-            document.getElementById("no_vote").style.display = "none";
-            document.getElementById("3_vote").style.display = "none";
-            document.getElementById("5_vote").style.display = "none";
-            document.getElementById("7_vote").style.display = "none";
             var value = this.value;
             
             if (value == "no_vote" ){
-                document.getElementById("no_vote").style.display = "block";
-                document.getElementById("placeholder").innerHTML='<object type="text/html" data="no_vote.html" ></object>';
+                $("#placeholder").load("no_vote.html");
             }
             else if (value == "vote_3"){
-                document.getElementById("3_vote").style.display = "block";
-                document.getElementById("placeholder").innerHTML='<object type="text/html" data="3_vote.html" ></object>';
-
+                $("#placeholder").load("3_vote.html");
             }
             else if (value == "vote_5"){
-                document.getElementById("5_vote").style.display = "block";
-                document.getElementById("placeholder").innerHTML='<object type="text/html" data="5_vote.html" ></object>';
+                $("#placeholder").load("5_vote.html");
             }
             else{
-                document.getElementById("7_vote").style.display = "block";
-                document.getElementById("placeholder").innerHTML='<object type="text/html" data="7_vote.html" ></object>';
+                $("#placeholder").load("7_vote.html");
             }
-            
         }
 
         document.getElementById("scope").onchange = change_selectable;
