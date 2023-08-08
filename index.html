@@ -41,7 +41,8 @@
 
         function change_selectable(){
             var value = this.value;
-            
+            document.getElementById("placeholder").innerHTML = "";
+
             if (value == "no_vote" ){
                 $("#placeholder").load("no_vote.html");
             }
@@ -55,7 +56,6 @@
                 $("#placeholder").load("7_vote.html");
             }
         }
-
         document.getElementById("scope").onchange = change_selectable;
     </script>
 </body>
