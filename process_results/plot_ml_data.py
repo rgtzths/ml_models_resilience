@@ -36,6 +36,21 @@ class Aggregation(enum.Enum):
 def multi_plot(df, args, addAll = True):
     fig = go.Figure()
 
+    colors = {
+        "LR" : "#636efa",
+        "SVM" : "#ef553b",
+        "KNN(1)" : "#00cc96",
+        "KNN(3)" : "#ab63fa",
+        "KNN(5)" : "#ffa15a",
+        "KNN(7)" : "#19d3f3",
+        "KNN(9)" : "#ff6692",
+        "DT" : "#b6e880",
+        "ANN" : "#ff97ff",
+        "RF" : "#fecb52",
+        "VF(hard)" : "#66b100",
+        "VF(soft)" : "#efb03b"
+    }
+
     # Get the models within the CSV file
     if not args.m: 
         models = df['model'].unique().tolist()
@@ -62,34 +77,46 @@ def multi_plot(df, args, addAll = True):
                 result = statistics.median(temp_data['mcc'].tolist())
 
             data_z.append(result)
-
         fig.add_trace(
             go.Scatter3d(
                 x=data_x,
                 y=data_y,
                 z=data_z,
                 mode='markers',
-                marker_color = "#ef553b", #models.index(m)+1, 
+                marker_color = colors[m], 
                 name = m
             )
         )
 
-
-    z = [[-0.1, -0.1, 1, 1]]
-    x = [data_x[7], 1.1, data_x[7], 1.1]
-    y = np.ones(4)*data_y[2]
+    mycolorscale = [[0, '#aa9ce2'],
+                    [1, '#aa9ce2']]
     
-    fig.add_trace(go.Surface(x=x, y=y, z=z, showscale=False, opacity=0.8))
-    
-    line_z = [[-0.1, -0.1], [-0.1, -0.1], [1, 1], [1, 1]]
-    line_y = [data_y[2], 1.1, data_y[2], 1.1]
-    line_x = np.ones(4)*data_x[7]
+    if len(models) > 1:
+        height=0.7
+        x= np.linspace(-0.1, 1.1, 75)
+        y= np.linspace(0.2, 1.1, 100)
+        z= height*np.ones((100, 75))
 
-    fig.add_trace(go.Surface(x=line_x, y=line_y, z=line_z, showscale=False, opacity=0.8))
+        fig.add_trace(go.Surface(x=x, y=y, z=z, colorscale=mycolorscale, showscale=False, opacity=0.8))
+
+    
+    elif args.x != None and args.y != None:
+        x= np.linspace(args.x, 1.1, 75)
+        y= args.y*np.ones(100)
+        z= np.reshape(np.linspace(-0.1, 0.7, 7500), (75, 100))
+
+        fig.add_trace(go.Surface(x=x, y=y, z=z, colorscale=mycolorscale, showscale=False))
+
+        x= args.x*np.ones(75)
+        y= np.linspace(args.y, 1.1, 100)
+        np.random.shuffle(y)
+        z= [np.linspace(-0.1, 0.7, 75) for x in range(100)]
+        
+        fig.add_trace(go.Surface(x=x, y=y, z=z, colorscale=mycolorscale, showscale=False))
 
     camera = dict(
         center=dict(x=0, y=0, z=0),
-        eye=dict(x=-0.1, y=2, z=0.4)
+        eye=dict(x=1, y=2, z=0.4)
     )
 
     fig.update_layout(scene=dict(xaxis = dict(range = [-0.1, 1.1], dtick=0.2), yaxis=dict(range = [0.2, 1.1], dtick=0.2), zaxis = dict(range = [-0.1, 1], dtick=0.2)), scene_camera=camera)
@@ -100,8 +127,8 @@ def multi_plot(df, args, addAll = True):
     fig.update_layout(scene_aspectmode='cube')
     
     fig.update_layout(
-        height=700,
-        width=800,
+        height=550,
+        width=600,
         margin=dict(t=0, b=0, l=0, r=0),
     )
     
@@ -143,6 +170,8 @@ if __name__ == '__main__':
     parser.add_argument('-f', type=str, help="Choose the format of the image (html, pdf, or browser)", default='browser')
     parser.add_argument('-o', type=str, help="Output file name", default='plots/figure1.pdf')
     parser.add_argument('-m', type=str, nargs="+", help="Models to consider", default=None)
+    parser.add_argument('-x', type=float, help="Nº malicious users breaking point", default=None)
+    parser.add_argument('-y', type=float, help="Percentage of the dataset breaking point", default=None)
     args = parser.parse_args()
     
     main(args)

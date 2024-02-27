@@ -135,7 +135,26 @@ class Dataset:
 
                 for i in range(len(right_indexes)):
                     if right_indexes[i] in self.votes:
-                        self.votes[right_indexes[i]].append(right_labels[i])
+                        self.votes[right_indexes[i]].append(right_labels[i])                    
+                        if len(self.votes[right_indexes[i]]) == self.n_votes: 
+                            added = False
+                            for label in self.votes[right_indexes[i]]:
+                                if self.votes[right_indexes[i]].count(label) > self.n_votes / 2:
+                                    self.labels.append((right_indexes[i], label))
+                                    self.collected_labels += 1
+                                    if self.all_labels[right_indexes[i]] != label:
+                                        self.wrong_labels +=1
+                                    added = True
+                                    break
+
+                            if not added:
+                                del self.votes[right_indexes[i]]
+
+                            # check the labels size and store is step is meet
+                            if self.percentage() >= self.step:
+                                store = True
+                                store_labels(self.path, self.labels, self.data)
+                                self.labels.clear()
                     else:
                         self.votes[right_indexes[i]] = [right_labels[i]]
 
