@@ -77,7 +77,7 @@ def main(args):
                 ('VF(soft)', VotingClassifier(estimators=[('lr', clf_lr), ('knn_3', clf_knn_3), ('dt', clf_dt), ('ann', clf_ann)], voting='soft'))
             ]
 
-            for i in tqdm.tqdm(range(args.l+1), leave=False):
+            for i in tqdm.tqdm(range(0, args.l+1, round(args.bot_per*args.l)), leave=False):
 
                 # load train dataset
                 dataset_files = [folder / f'{i}' / f for f in os.listdir(folder / f'{i}') if re.search(f'dataset_[0-9]+.csv', f)]
@@ -109,7 +109,8 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Predictions surface from the dataset')
     parser.add_argument('-i', type=str, help='captcha dataset folder', default='results')
-    parser.add_argument('-l', type=int, help='number of iterations (loops)', default=20)
+    parser.add_argument('-l', type=int, help='number of atackers', default=20)
+    parser.add_argument('--bot_per', type=float, help='step percentage for the number of malicious users', default=0.05)
     parser.add_argument('-t', type=str, help='MNIST test dataset', default='dataset/mnist_test.csv')
     parser.add_argument('-o', type=str, help='output file', default='output.csv')
     args = parser.parse_args()

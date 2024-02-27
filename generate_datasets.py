@@ -38,7 +38,7 @@ def main(args):
     # create a output path
     output = pathlib.Path(args.o)
 
-    for i in tqdm.tqdm(range(args.l+1)):
+    for i in tqdm.tqdm(range(0, args.l+1, round(args.bot_per*args.l))):
         # ratio of bots
         bad_bots = i
         # create folder for this loop results
@@ -69,19 +69,21 @@ def main(args):
                 t, l = good.reply(t, l)
 
             check, store = dataset.check_captcha(t, l)
+
             bot_counter = (bot_counter+1)%args.l
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Datasets')
     parser.add_argument('-i', type=str, help='MNIST train dataset', default='dataset/mnist_train.csv')
-    parser.add_argument('-l', type=int, help='number of iterations (loops)', default=20)
+    parser.add_argument('-l', type=int, help='number of max malicious users', default=20)
     parser.add_argument('-b', type=float, help='base percentage for the Dataset', default=.3)
     parser.add_argument('-s', type=float, help='step percentage for the Dataset incement', default=.1)
     parser.add_argument('--left', type=int, help='size of the left part of the captcha (known)', default=3)
     parser.add_argument('--right', type=int, help='size of the right part of the captcha (unknown)', default=3)
     parser.add_argument('--behavior', type=Behavior, choices=list(Behavior), help='Evil bot behavior', default='random')
+    parser.add_argument('--bot_per', type=float, help='step percentage for the number of malicious users', default=0.05)
     parser.add_argument('-o', type=str, help='output folder', default='results')
-    parser.add_argument('-v', type=int, help='number of votes', default=3)
+    parser.add_argument('-v', type=int, help='number of votes', default=1)
     parser.add_argument('--seed', type=int, help='seed to standardize runs', default=7)
     args = parser.parse_args()
 

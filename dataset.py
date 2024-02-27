@@ -76,7 +76,7 @@ class Dataset:
             right_indexes = []
             for _ in range(self.right):
 
-                # increment the counter for the non curated labels, skiping those that already have 3 or more votes
+                # increment the counter for the non curated labels, skiping those that already have N or more votes
                 while(self.base_idx + self.counter in self.votes and len(self.votes[self.base_idx + self.counter]) >= self.n_votes):
                     self.counter = (self.counter + 1) % (len(self.data) - self.curated_labels_size)
 
@@ -136,29 +136,28 @@ class Dataset:
                 for i in range(len(right_indexes)):
                     if right_indexes[i] in self.votes:
                         self.votes[right_indexes[i]].append(right_labels[i])
-                        
-                        if len(self.votes[right_indexes[i]]) == self.n_votes: 
-                            added = False
-                            for label in self.votes[right_indexes[i]]:
-                                if self.votes[right_indexes[i]].count(label) > self.n_votes / 2:
-                                    self.labels.append((right_indexes[i], label))
-                                    self.collected_labels += 1
-                                    if self.all_labels[right_indexes[i]] != label:
-                                        self.wrong_labels +=1
-                                    added = True
-                                    break
-
-                            if not added:
-                                del self.votes[right_indexes[i]]
-
-                            # check the labels size and store is step is meet
-                            if self.percentage() >= self.step:
-                                store = True
-                                store_labels(self.path, self.labels, self.data)
-                                self.labels.clear()
-                                #print(round(self.wrong_labels / (self.curated_labels_size + self.collected_labels) ,2), self.curated_labels_size + self.collected_labels)
                     else:
                         self.votes[right_indexes[i]] = [right_labels[i]]
+
+                    if len(self.votes[right_indexes[i]]) == self.n_votes: 
+                        added = False
+                        for label in self.votes[right_indexes[i]]:
+                            if self.votes[right_indexes[i]].count(label) > self.n_votes / 2:
+                                self.labels.append((right_indexes[i], label))
+                                self.collected_labels += 1
+                                if self.all_labels[right_indexes[i]] != label:
+                                    self.wrong_labels +=1
+                                added = True
+                                break
+
+                        if not added:
+                            del self.votes[right_indexes[i]]
+
+                        # check the labels size and store is step is meet
+                        if self.percentage() >= self.step:
+                            store = True
+                            store_labels(self.path, self.labels, self.data)
+                            self.labels.clear()
         except:
             raise("Error")
         finally:
