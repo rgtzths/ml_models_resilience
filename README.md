@@ -1,5 +1,5 @@
 # shallow_resilience
-This repository is the code basis for the paper entitled "Data Poisoning: When ML feels ill."
+This repository is the code basis for the paper entitled "Rethinking Security: The Resilience of Shallow ML Models]{Rethinking Security: The Resilience of Shallow ML Models"
 It explores several security threads directed toward ML models using the applied scenario of a captcha service.
 
 ## Experiments
