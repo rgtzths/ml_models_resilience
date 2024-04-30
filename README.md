@@ -258,8 +258,6 @@ To check them, click <a href="https://anonymous.4open.science/w/shallow_resilien
 
 * **Mário Antunes** - [mariolpantunes](https://github.com/mariolpantunes)
 * **Rafael Teixeira** - [rgtzths](https://github.com/rgtzths)
-* **Rafael Simões** - []()
-* **Vitor Cunha** - []()
 
 ## License
 
