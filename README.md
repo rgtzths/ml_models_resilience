@@ -248,12 +248,6 @@ RF        | [15,  6]   |  0.75              |  43200        |  0.44         |
 VF(hard)  | [15,  5]   |  0.75              |  39000        |  0.40         |  
 VF(soft)  | [11,  3]   |  0.55              |  30600        |  0.23         |  
 
-
-## Model degradation with the increase of attackers/poisoned dataset
-Since the plots generated are three-dimensional, they are presented on the GitHub pages.
-
-To check them, click <a href="https://anonymous.4open.science/w/shallow_resilience-F0A3/" target="_blank">here</a>.
-
 ## Authors
 
 * **Mário Antunes** - [mariolpantunes](https://github.com/mariolpantunes)
